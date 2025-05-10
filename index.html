@@ -24,11 +24,7 @@
     .barra-busca input { flex:1; padding:10px; font-size:1.1rem; border:2px solid var(--trop-green); border-radius:4px; }
     .menu { position: relative; margin-left:8px; }
     .menu button { padding:8px 12px; font-size:1rem; background: var(--trop-green); color:#fff; border:none; border-radius:4px; }
-    .menu ul {
-      position: absolute; top: 40px; right: 0;
-      list-style:none; background:#fff; border:1px solid #ccc;
-      display:none; z-index: 10; border-radius:4px; overflow:hidden;
-    }
+    .menu ul { position: absolute; top: 40px; right: 0; list-style:none; background:#fff; border:1px solid #ccc; display:none; z-index: 10; border-radius:4px; overflow:hidden; }
     .menu ul.show { display: block; }
     .menu ul li { padding:10px; cursor:pointer; font-size:1rem; }
     .menu ul li:hover { background:var(--trop-magenta); color:#fff; }
@@ -38,29 +34,12 @@
     .item input { width:100px; padding:5px; font-size:1rem; border:1px solid #ccc; border-radius:4px; }
     .item button { margin-left: 12px; font-size:1rem; padding:5px 10px; border:none; border-radius:4px; background: var(--trop-red); color:#fff; }
     footer { margin-top:20px; font-size:1rem; color:#fff; }
-    /* Modal de Adição */
     .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; }
     .modal.show { display:flex; }
     .modal-content { background:#fff; padding:20px; border-radius:8px; width:90%; max-width:400px; }
-    .modal-content h2 { margin-bottom:15px; font-size:1.2rem; }
-    .modal-content label { display:block; margin:8px 0 4px; }
-    .modal-content input, .modal-content select { width:100%; padding:8px; font-size:1rem; border:1px solid #ccc; border-radius:4px; }
-    .modal-content button { margin-top:15px; padding:10px 15px; font-size:1rem; border:none; border-radius:4px; }
-    .modal-content .actions { display:flex; justify-content:flex-end; gap:10px; }
-    .modal-content .actions .confirm { background: var(--trop-green); color:#fff; }
-    .modal-content .actions .cancel { background: var(--trop-red); color:#fff; }
-    @media (max-width: 600px) {
-      .item { flex-direction: column; align-items: flex-start; }
-      .item input, .item button { width: 100%; margin-top: 8px; }
-      .menu ul { right: 10px; }
-    }
   </style>
 </head>
-<body>
-  <header>
-    <h1>Gerenciador de Itens de Venda</h1>
-  </header>
-  <main>
+<body>  <header><h1>Gerenciador de Itens de Venda</h1></header>  <main>
     <div class="barra-busca">
       <input type="text" id="filtro" placeholder="Buscar por nome...">
       <div class="menu">
@@ -73,98 +52,54 @@
       </div>
     </div>
     <div class="lista-itens" id="lista"></div>
-  </main>
-  <footer>© 2025 Minha Loja</footer>  <!-- Modal Adicionar -->  <div class="modal" id="modalAdicionar">
+  </main>  <footer>© 2025 Minha Loja</footer>  <div class="modal" id="modalAdicionar">
     <div class="modal-content">
-      <h2>Adicionar Novo Item</n2>
-      <label for="nomeItem">Nome:</label>
-      <input type="text" id="nomeItem">
-      <label for="precoItem">Preço:</label>
-      <input type="number" id="precoItem" step="0.01">
-      <label for="corItem">Cor de Fundo:</label>
-      <select id="corItem">
-        <option value="var(--trop-yellow)">Amarelo Tropical</option>
-        <option value="var(--trop-orange)">Laranja Tropical</option>
-        <option value="var(--trop-pink)">Rosa Tropical</option>
-        <option value="var(--trop-red)">Vermelho Tropical</option>
-        <option value="var(--trop-green)">Verde Tropical</option>
-        <option value="var(--trop-teal)">Verde Água</option>
-        <option value="var(--trop-cyan)">Ciano Tropical</option>
-        <option value="var(--trop-blue)">Azul Tropical</option>
-        <option value="var(--trop-magenta)">Magenta Tropical</option>
-        <option value="var(--trop-purple)">Roxo Tropical</option>
-      </select>
-      <div class="actions">
-        <button class="cancel" id="cancelAdd">Cancelar</button>
-        <button class="confirm" id="confirmAdd">Adicionar</button>
-      </div>
+      <h2>Adicionar Novo Item</h2>
+      <label>Nome:</label><input type="text" id="nomeItem">
+      <label>Preço:</label><input type="number" id="precoItem" step="0.01">
+      <button onclick="adicionarItem()">Adicionar</button>
+      <button onclick="fecharModal()">Cancelar</button>
     </div>
   </div>  <script>
-    const STORAGE_KEY = 'itensVenda';
-    let itens = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [{ nome: 'Produto Exemplo', preco: 10.00, cor: 'var(--trop-yellow)' }];
+    const itens = JSON.parse(localStorage.getItem('itensVenda')) || [];
 
-    function salvar() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(itens));
-    }
-    function renderizar(filtro = '') {
-      const listaEl = document.getElementById('lista'); listaEl.innerHTML = '';
-      itens.filter(i => i.nome.toLowerCase().includes(filtro.toLowerCase())).forEach((item, idx) => {
-        const div = document.createElement('div'); div.className = 'item';
-        div.style.backgroundColor = item.cor || 'transparent';
-        div.innerHTML = `
+    function salvar() { localStorage.setItem('itensVenda', JSON.stringify(itens)); }
+
+    function renderizar() {
+      const lista = document.getElementById('lista'); lista.innerHTML = '';
+      itens.forEach((item, idx) => {
+        lista.innerHTML += `<div class='item' style='background-color:${item.cor || "transparent"}'>
           <span>${item.nome}</span>
-          <input type="number" step="0.01" value="${item.preco.toFixed(2)}" data-idx="${idx}">
-          <button onclick="deletar(${idx})">Deletar</button>
-        `;
-        listaEl.appendChild(div);
-      });
-      // listeners preço
-      document.querySelectorAll('.item input').forEach(input => {
-        input.addEventListener('change', e => {
-          const i = +e.target.dataset.idx;
-          itens[i].preco = parseFloat(e.target.value) || 0;
-          salvar();
-        });
+          <input type='number' value='${item.preco.toFixed(2)}' onchange='atualizarPreco(${idx}, this.value)'>
+          <button onclick='deletar(${idx})'>Deletar</button>
+        </div>`;
       });
     }
-    function deletar(idx) {
-      if (confirm('Deseja realmente deletar este item?')) {
-        itens.splice(idx,1); salvar(); renderizar(filtro.value);
-      }
+
+    function adicionarItem() {
+      const nome = document.getElementById('nomeItem').value.trim();
+      const preco = parseFloat(document.getElementById('precoItem').value) || 0;
+      if (!nome) return alert('Nome é obrigatório.');
+      itens.push({ nome, preco, cor: 'var(--trop-yellow)' });
+      salvar(); renderizar(); fecharModal();
     }
-    // opções menu
-    btnMenu.addEventListener('click', () => itensMenu.classList.toggle('show'));
-    document.addEventListener('click', e => { if (!e.target.closest('.menu')) itensMenu.classList.remove('show'); });
-    // ordenar
-    optOrdenar.addEventListener('click', () => { itens.sort((a,b)=>a.nome.localeCompare(b.nome)); salvar(); renderizar(filtro.value); itensMenu.classList.remove('show'); });
-    // alterar preço
-    optAlterarPreco.addEventListener('click', () => {
-      const nome = prompt('Nome do produto a alterar:'); const idx = itens.findIndex(i=>i.nome.toLowerCase()===nome.toLowerCase());
-      if(idx<0) return alert('Item não encontrado.');
-      const novo = parseFloat(prompt(`Novo preço para "${itens[idx].nome}":`).replace(',', '.'));
-      if(isNaN(novo)) return alert('Preço inválido.');
-      itens[idx].preco = novo; salvar(); renderizar(filtro.value); itensMenu.classList.remove('show');
+
+    function deletar(idx) { itens.splice(idx, 1); salvar(); renderizar(); }
+
+    function atualizarPreco(idx, preco) { itens[idx].preco = parseFloat(preco); salvar(); }
+
+    function abrirModal() { document.getElementById('modalAdicionar').classList.add('show'); }
+
+    function fecharModal() { document.getElementById('modalAdicionar').classList.remove('show'); }
+
+    document.getElementById('optAdicionar').onclick = abrirModal;
+
+    document.getElementById('btnMenu').onclick = () => document.getElementById('itensMenu').classList.toggle('show');
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.menu')) document.getElementById('itensMenu').classList.remove('show');
     });
-    // adicionar com modal
-    optAdicionar.addEventListener('click', ()=> modalAdicionar.classList.add('show'), false);
-    cancelAdd.addEventListener('click', ()=> modalAdicionar.classList.remove('show'));
-    confirmAdd.addEventListener('click', ()=>{
-      const nome=nomeItem.value.trim(); const p=parseFloat(precoItem.value);
-      const cor=corItem.value;
-      if(!nome) return alert('Nome obrigatório.'); if(isNaN(p)) return alert('Preço inválido.');
-      itens.push({nome, preco:p, cor}); salvar(); renderizar(filtro.value); modalAdicionar.classList.remove('show');
-      nomeItem.value=''; precoItem.value=''; corItem.selectedIndex=0;
-    });
-    // busca
-    const filtro = document.getElementById('filtro'); filtro.addEventListener('input', e=>renderizar(e.target.value));
-    // refs
-    const btnMenu=document.getElementById('btnMenu'), itensMenu=document.getElementById('itensMenu');
-    const optOrdenar=document.getElementById('optOrdenar'), optAdicionar=document.getElementById('optAdicionar'),
-      optAlterarPreco=document.getElementById('optAlterarPreco');
-    const modalAdicionar=document.getElementById('modalAdicionar'), cancelAdd=document.getElementById('cancelAdd'),
-      confirmAdd=document.getElementById('confirmAdd'), nomeItem=document.getElementById('nomeItem'),
-      precoItem=document.getElementById('precoItem'), corItem=document.getElementById('corItem');
 
     renderizar();
   </script></body>
-          </html>
+</html>
