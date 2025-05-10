@@ -3,32 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <title>Gerenciador de Itens de Venda</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, initial-scale=1.2, maximum-scale=1.5">
   <style>
     * { box-sizing: border-box; margin:0; padding:0; font-family: Arial, sans-serif; }
-    header, footer { background: #f0f0f0; padding: 10px; text-align: center; }
-    main { padding: 10px; }
-    .barra-busca { display: flex; align-items: center; margin-bottom: 10px; }
-    .barra-busca input { flex:1; padding:5px; font-size:1rem; }
+    header, footer { background: #f0f0f0; padding: 15px; text-align: center; font-size: 1.2rem; }
+    main { padding: 15px; }
+    .barra-busca { display: flex; align-items: center; margin-bottom: 15px; }
+    .barra-busca input { flex:1; padding:10px; font-size:1.1rem; }
     .menu { position: relative; margin-left:8px; }
-    .menu button { padding:5px 10px; }
+    .menu button { padding:8px 12px; font-size:1rem; }
     .menu ul {
-      position: absolute; top: 30px; right: 0;
+      position: absolute; top: 40px; right: 0;
       list-style:none; background:#fff; border:1px solid #ccc;
       display:none;
     }
-    .menu ul li { padding:5px 10px; cursor:pointer; }
+    .menu ul li { padding:10px; cursor:pointer; font-size:1rem; }
     .menu ul li:hover { background:#eee; }
-    .lista-itens { display: flex; flex-direction: column; gap:8px; }
-    .item { display: flex; justify-content: space-between; align-items: center; padding:5px; border:1px solid #ddd; }
+    .lista-itens { display: flex; flex-direction: column; gap:12px; }
+    .item { display: flex; justify-content: space-between; align-items: center; padding:12px; border:1px solid #ddd; font-size:1.1rem; }
     .item span { flex:1; }
-    .item input { width:80px; padding:3px; }
-    .item button { margin-left: 8px; }
-    footer { margin-top:20px; font-size:0.9rem; }
+    .item input { width:100px; padding:5px; font-size:1rem; }
+    .item button { margin-left: 12px; font-size:1rem; padding:5px 10px; }
+    footer { margin-top:20px; font-size:1rem; }
 
     @media (max-width: 600px) {
       .item { flex-direction: column; align-items: flex-start; }
-      .item input, .item button { width: 100%; margin-top: 5px; }
+      .item input, .item button { width: 100%; margin-top: 8px; }
       .menu ul { right: 10px; }
     }
   </style>
@@ -96,3 +96,4 @@
   </script>
 </body>
 </html>
+ 
