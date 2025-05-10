@@ -1,7 +1,9 @@
-<!DOCTYPE html><html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <title>Gerenciador de Itens de Venda</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     * { box-sizing: border-box; margin:0; padding:0; font-family: Arial, sans-serif; }
     header, footer { background: #f0f0f0; padding: 10px; text-align: center; }
@@ -23,11 +25,21 @@
     .item input { width:80px; padding:3px; }
     .item button { margin-left: 8px; }
     footer { margin-top:20px; font-size:0.9rem; }
+
+    @media (max-width: 600px) {
+      .item { flex-direction: column; align-items: flex-start; }
+      .item input, .item button { width: 100%; margin-top: 5px; }
+      .menu ul { right: 10px; }
+    }
   </style>
 </head>
-<body>  <header>
+<body>
+
+  <header>
     <h1>Gerenciador de Itens de Venda</h1>
-  </header>  <main>
+  </header>
+
+  <main>
     <div class="barra-busca">
       <input type="text" id="filtro" placeholder="Buscar por nome...">
       <div class="menu">
@@ -38,11 +50,16 @@
           <li id="optAlterarPreco">Alterar Preço</li>
         </ul>
       </div>
-    </div><div class="lista-itens" id="lista"></div>
+    </div>
 
-  </main>  <footer>
+    <div class="lista-itens" id="lista"></div>
+  </main>
+
+  <footer>
     © 2025 Minha Loja
-  </footer>  <script>
+  </footer>
+
+  <script>
     const STORAGE_KEY = 'itensVenda';
     let itens = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [
       { nome: 'Produto Exemplo', preco: 10.00 }
@@ -76,5 +93,6 @@
     });
 
     renderizar();
-  </script></body>
+  </script>
+</body>
 </html>
